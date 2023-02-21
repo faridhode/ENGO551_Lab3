@@ -1,0 +1,58 @@
+/*table, th, td {
+  border: 1px solid black;
+}
+
+body {
+  background-color: #FB9F9F;
+}
+body p {
+  color: black;
+  font-family: "Courier New", monospace;
+  font-size: 20px;
+}
+
+h2 {
+  color: navy;
+  margin-top: 20px;
+  text-align: center;
+  font-family: "Times New Roman", Times, serif;
+}
+
+h2:hover {
+  color: cyan;
+}
+
+.a, .b {
+  color: green;
+  font-size: 30px;
+}
+
+.b {
+  font-style: italic;
+}
+
+#caption {
+  font-style: italic;
+}
+
+h3 {
+  font-size: 20px;
+  text-align: center;
+  font-family: "Times New Roman", Times, serif;
+}
+
+p::first-line {
+  background-color: yellow;
+}
+
+@media only screen and (max-width: 800px) {
+  body {
+    background-color: #efb18e;
+  }
+} */
+
+#map { height: 600px;
+       width: 800px;
+	   align-items: center;}
+
+/*# sourceMappingURL=styles.css.map */

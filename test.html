@@ -1,23 +1,58 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>jQuery UI Datepicker - Default functionality</title>
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-  <link rel="stylesheet" href="/resources/demos/style.css">
-  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-  <script>
-  $( function() {
-    $( "#datepicker" ).datepicker();
-  } );
-  </script>
-</head>
-<body>
- 
-<p>Date: <input type="text" id="datepicker"></p>
- 
- 
-</body>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Leaflet Map with Date Range Picker</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.css" integrity="sha512-wcYIdOeHkaj90MCdAVvOJgFECOLPrds55QFZxP+BfKKXhJIdrI09BEXGyDnYPwJAmMzUDL3qKrHtIezlFJK9Cg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <style>
+      #mapid {
+        height: 500px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="mapid"></div>
+    <input type="text" id="daterange" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.js" integrity="sha512-F6Uxj6UW1X+nD1pdTQ2Q14jP6Gc8FfAcOaFZQJv0x+OroG9rFIdjJyP/UvzDxBbW1Cq3qLZgjKtjr5x5oz9Hsw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script>
+      var startDate = null;
+      var endDate = null;
+
+      function onDateRangeChange(start, end) {
+        startDate = start;
+        endDate = end;
+        console.log('Selected date range:', startDate.format('YYYY-MM-DD'), '-', endDate.format('YYYY-MM-DD'));
+      }
+
+      // Initialize date range picker
+      $('#daterange').daterangepicker({
+        opens: 'left',
+        startDate: moment().subtract(7, 'days'),
+        endDate: moment(),
+        ranges: {
+          'Last 7 Days': [moment().subtract(7, 'days'), moment()],
+          'Last 30 Days': [moment().subtract(30, 'days'), moment()],
+          'This Month': [moment().startOf('month'), moment().endOf('month')],
+          'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        }
+      }, onDateRangeChange);
+
+      // Initialize Leaflet map
+      var map = L.map('mapid').setView([51.505, -0.09], 13);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
+        maxZoom: 18
+      }).addTo(map);
+
+      // Add marker to map
+      L.marker([51.5, -0.09]).addTo(map)
+        .bindPopup('A marker on the map!')
+        .openPopup();
+    </script>
+  </body>
 </html>

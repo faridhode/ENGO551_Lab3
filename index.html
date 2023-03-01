@@ -16,35 +16,40 @@
 		<script src="//code.jquery.com/jquery-3.6.0.min.js"></script>
 		<script src="//code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
 		
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+		<link rel="stylesheet" href="/resources/demos/style.css">
+		<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+		<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 
 		<link rel="stylesheet" href="styles.css">
+		
+		<script>
+
+		$("#start").datepicker({
+		  dateFormat: "yyyy-mm-dd",
+		  onSelect: function(selectedDate) {
+			$("#end").datepicker("option", "minDate", selectedDate);
+		  }
+		});
+		$("#end").datepicker({
+		  dateFormat: "yyyy-mm-dd",
+		  onSelect: function(selectedDate) {
+			$("#start").datepicker("option", "maxDate", selectedDate);
+		  }
+		});
+
+		</script>
+		
     </head>
     <body>
 		<h2> Welcome to the UnOfficial City of Calgary Search Records Website!</h2>
 		
 		<label for="start">Start date:</label>
-		<input type="date" id="start" class="datepicker">
+		<input type="date" id="start">
 
 		<label for="end">End date:</label>
-		<input type="date" id="end" class="datepicker">
+		<input type="date" id="end">
 		
-		<script>
-		  $(document).ready(function() {
-			$("#start").datepicker({
-			  dateFormat: "yyyy-mm-dd",
-			  onSelect: function(selectedDate) {
-				$("#end").datepicker("option", "minDate", selectedDate);
-			  }
-			});
-			$("#end").datepicker({
-			  dateFormat: "yyyy-mm-dd",
-			  onSelect: function(selectedDate) {
-				$("#start").datepicker("option", "maxDate", selectedDate);
-			  }
-			});
-		  });
-		</script>
-
         <div id="map"></div>
 		<script>
 			var map = L.map('map').setView([51.505, -0.09], 13);
@@ -52,6 +57,7 @@
 			L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 19, attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'}).addTo(map);
 			
 			map.setView([51.05, -114.070], 10);
+			document.write("YARGH")
 		</script>
 
     </body>

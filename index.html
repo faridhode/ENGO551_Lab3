@@ -34,6 +34,8 @@
 		<label for="end">End date:</label>
 		<input type="date" id="end">
 		
+		<button id="query-api" class="btn btn-primary">Query API</button>
+		
         <div id="map"></div>
 		<script>
 			$("#start").datepicker({
@@ -53,7 +55,15 @@
 			L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 19, attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'}).addTo(map);
 			
 			map.setView([51.05, -114.070], 10);
-			document.write(start)
+			
+			$('#query-api').on('click', function() {
+				var startDate = $('#start').val();
+				var endDate = $('#end').val();
+				
+				var apiUrl = "https://data.calgary.ca/resource/c2es-76ed.geojson?$where=issueddate > '" + startDate + "' and issueddate < '" + endDate + "'";
+			
+			});
+			
 		</script>
 
     </body>

@@ -55,12 +55,32 @@
 			map.setView([51.05, -114.070], 10);
 			
 			$('#query-api').on('click', function() {
+			
+				map.eachLayer(function(layer){ // clears all current markers each time query launched
+					
+					map.removeLayer(layer);
+					L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 19, attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'}).addTo(map);
+				});
+		
 				var startDate = $('#start').val();
 				var endDate = $('#end').val();
 				
 				var apiUrl = "https://data.calgary.ca/resource/c2es-76ed.geojson?$where=issueddate > '" + startDate + "' and issueddate < '" + endDate + "'";
 				
-				document.write(apiUrl)
+				$.ajax({
+					url: apiUrl,
+					dataType: 'json',
+					success: function(data){
+						console.log(data);
+						
+						// loop through results and add markers to map
+						L.geoJSON(data, {
+							pointToLayer: function(feature, latlng) {
+								return L.marker(latlng);
+								}
+							}).addTo(map);
+						}
+				});
 			});
 			
 			

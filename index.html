@@ -2,6 +2,12 @@
 <html>
     <head>
         <title>The City of Calgary</title>
+		
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/themes/smoothness/jquery-ui.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
+
+		
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 		
 		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
@@ -12,14 +18,6 @@
 		integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
 		crossorigin=""></script>
 		
-		<link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
-		<script src="//code.jquery.com/jquery-3.6.0.min.js"></script>
-		<script src="//code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
-		
-		<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-		<link rel="stylesheet" href="/resources/demos/style.css">
-		<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-		<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 
 		<link rel="stylesheet" href="styles.css">
 		
@@ -61,8 +59,11 @@
 				var endDate = $('#end').val();
 				
 				var apiUrl = "https://data.calgary.ca/resource/c2es-76ed.geojson?$where=issueddate > '" + startDate + "' and issueddate < '" + endDate + "'";
-			
+				
+				document.write(apiUrl)
 			});
+			
+			
 			
 		</script>
 

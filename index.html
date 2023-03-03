@@ -17,7 +17,9 @@
 		<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
 		integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
 		crossorigin=""></script>
-		
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/OverlappingMarkerSpiderfier-Leaflet/0.2.6/oms.min.js"></script>
+
 
 		<link rel="stylesheet" href="styles.css">
 		
@@ -53,32 +55,56 @@
 			L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 19, attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'}).addTo(map);
 			
 			map.setView([51.05, -114.070], 10);
+
+			// initializing the spiderfier plugin
+			var oms = new OverlappingMarkerSpiderfier(map);
+
 			
+
+			// array to store markers
+
+			var markers = [];
+
 			$('#query-api').on('click', function() {
-			
-				map.eachLayer(function(layer){ // clears all current markers each time query launched
-					
-					map.removeLayer(layer);
-					L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 19, attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'}).addTo(map);
-				});
-		
+
+				for (var i = 0; i < markers.length; i++) {
+					map.removeLayer(markers[i]);
+					}
+				markers = [];
+
 				var startDate = $('#start').val();
 				var endDate = $('#end').val();
 				
 				var apiUrl = "https://data.calgary.ca/resource/c2es-76ed.geojson?$where=issueddate > '" + startDate + "' and issueddate < '" + endDate + "'";
-				
+
 				$.ajax({
 					url: apiUrl,
 					dataType: 'json',
 					success: function(data){
 						console.log(data);
-						
+
 						// loop through results and add markers to map
 						L.geoJSON(data, {
 							pointToLayer: function(feature, latlng) {
-								return L.marker(latlng);
+								var marker = L.marker(latlng);
+
+								// add the popup
+								marker.bindPopup(
+									"<b>Issued Date:</b> " + feature.properties.issueddate + "<br>" +
+									"<b>Work Class Group:</b> " + feature.properties.workclassgroup + "<br>" +
+									"<b>Contractor Name:</b> " + feature.properties.contractorname + "<br>" +
+									"<b>Community Name:</b> " + feature.properties.communityname + "<br>" +
+									"<b>Original Address:</b> " + feature.properties.originaladdress
+									);
+
+									// add marker to array
+									markers.push(marker);
+
+									// add marker to map
+									return marker.addTo(map);
+
 								}
-							}).addTo(map);
+							});
 						}
 				});
 			});

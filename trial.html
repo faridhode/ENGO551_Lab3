@@ -22,6 +22,7 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/OverlappingMarkerSpiderfier-Leaflet/0.2.6/oms.min.js"></script>
 
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.1/MarkerCluster.css"/>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.1/MarkerCluster.Default.css"/>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.1/leaflet.markercluster.js"></script>
 
 
@@ -60,24 +61,28 @@
 			
 			map.setView([51.05, -114.070], 10);
 
+			// initializing the marker cluster plugin
+			var markerCluster = L.markerClusterGroup();
+			markerCluster.addTo(map);
+
+
 			// initializing the spiderfier plugin
 			var oms = new OverlappingMarkerSpiderfier(map);
 
 
-
 			// array to store markers
-
-			var markers = [];
-
-			// creating a MarkerCluster group
-			var markerCluster = L.markerClusterGroup();
-
+			var markerArray = [];
 
 			$('#query-api').on('click', function() {
 
-				// clear previously searched markers
+				//for (var i = 0; i < markers.length; i++) {
+				//	map.removeLayer(markers[i]);
+				//	}
+				//markers = [];
 
-				markerCluster.clearLayers();
+				// clear markers from previous data search
+				markerClusterGroup.clearLayers();
+				markerArray = [];
 
 				var startDate = $('#start').val();
 				var endDate = $('#end').val();
@@ -108,16 +113,17 @@
 									markerCluster.addLayer(marker);
 
 									// add marker to array
-									markers.push(marker);
+									markerArray.push(marker);
 
-									// add marker to map
-									return marker;
 								}
 							});
 
-							// add marker cluster group to map
-							map.addLayer(markerCluster);
-						}
+							var group = new L.featureGroup(markerArray);
+							map.fitBounds(group.getBounds());
+						},
+						error: function(error) {
+							console.log(error);
+							}
 				});
 			});
 			

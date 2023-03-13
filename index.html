@@ -24,7 +24,10 @@
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.1/MarkerCluster.css"/>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.1/leaflet.markercluster.js"></script>
 
-
+		<meta charset=utf-8 />
+		<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+		<script src='https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.js'></script>
+		<link href='https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.css' rel='stylesheet' />
 		<link rel="stylesheet" href="styles.css">
 		
 		
@@ -42,6 +45,7 @@
 		
         <div id="map"></div>
 		<script>
+			
 			$("#start").datepicker({
 			  dateFormat: "yyyy-mm-dd",
 			  onSelect: function(selectedDate) {
@@ -54,12 +58,41 @@
 				$("#start").datepicker("option", "maxDate", selectedDate);
 			  }
 			});
+			
+			L.mapbox.accessToken = 'pk.eyJ1IjoiZmhvZGUxMjMiLCJhIjoiY2xmMW5uYWFuMDJscTQ0bnhvYjRrdTE5dSJ9.ZYEavyNFWMwOR8ChoNW4XA';
 			var map = L.map('map').setView([51.505, -0.09], 13);	
 			
-			L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 19, attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'}).addTo(map);
+			var normalLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 19, attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'}).addTo(map);
+			
+			var trafficLayer = L.tileLayer(
+			'https://api.mapbox.com/styles/v1/fhode123/clf1nrxb8000301sfbhceoy5o/tiles/{z}/{x}/{y}?access_token=' + L.mapbox.accessToken, {
+			tileSize: 512,
+			zoomOffset: -1,
+			attribution: '© <a href="https://apps.mapbox.com/feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+			});
 			
 			map.setView([51.05, -114.070], 10);
+			// adds a toggle button to select data
+			var button = L.control({position: 'topright'});
+			button.onAdd = function(map) {
+				var div = L.DomUtil.create('div', 'toggle-control');
+				div.innerHTML = '<label><input type="checkbox">Show Traffic Incidents</label>';
+				return div;
+			};
+			button.addTo(map);
 
+			// adds the traffic layer when the button is selected, removes when unselected
+			var checkbox = document.querySelector('.toggle-control input');
+			checkbox.addEventListener('change', function() {
+				if (checkbox.checked) {
+					map.removeLayer(normalLayer);
+					trafficLayer.addTo(map);
+				} else {
+					map.removeLayer(trafficLayer);
+					normalLayer.addTo(map);
+				}
+			});
+			
 			// initializing the spiderfier plugin
 			var oms = new OverlappingMarkerSpiderfier(map);
 
@@ -120,6 +153,10 @@
 						}
 				});
 			});
+			
+
+
+			
 			
 			
 			
